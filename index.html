@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع قرآني شامل</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #57c5b6;
+            --accent-color: #159895;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Amiri', serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        #audioPlayer {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showSection('reciters')">القراء والسور</a></li>
+            <li><a href="#" onclick="showSection('live-tv')">البث المباشر</a></li>
+            <li><a href="#" onclick="showSection('radios')">الراديو</a></li>
+            <li><a href="#" onclick="showSection('tafasir')">التفسير</a></li>
+            <li><a href="#" onclick="showSection('videos')">الفيديوهات</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <audio id="audioPlayer" controls class="hidden"></audio>
+        <div id="content"></div>
+        
+    </div>
+
+    <script>
+    let recitersData = [];
+    let suwarData = [];
+    let selectedReciter = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showSection('reciters');
+    });
+
+    function showSection(section) {
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = '<p>جاري التحميل...</p>';
+
+        if (section === 'reciters') {
+            Promise.all([
+                fetch('json/reciters.json').then(response => response.json()),
+                fetch('json/suwar.json').then(response => response.json())
+            ]).then(([recitersJson, suwarJson]) => {
+                recitersData = recitersJson.reciters;
+                suwarData = suwarJson.suwar;
+                renderReciters();
+            }).catch(error => {
+                console.error('خطأ:', error);
+                contentDiv.innerHTML = '<p>حدث خطأ أثناء تحميل البيانات.</p>';
+            });
+        } else {
+            fetch(`json/${section}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    let html = '';
+                    switch(section) {
+                        case 'live-tv':
+                            html = renderLiveTV(data.livetv);
+                            break;
+                        case 'radios':
+                            html = renderRadios(data.radios);
+                            break;
+                        case 'tafasir':
+                            html = renderTafasir(data.tafasir);
+                            break;
+                        case 'videos':
+                            html = renderVideos(data.videos);
+                            break;
+                    }
+                    contentDiv.innerHTML = html;
+                    contentDiv.classList.add('fade-in');
+                })
+                .catch(error => {
+                    console.error('خطأ:', error);
+                    contentDiv.innerHTML = '<p>حدث خطأ أثناء تحميل البيانات.</p>';
+                });
+        }
+    }
+
+    function renderReciters() {
+        const contentDiv = document.getElementById('content');
+        let html = `
+            <h1>القراء</h1>
+            <div class="search-container">
+                <input type="text" id="reciterSearch" placeholder="ابحث عن قارئ" onkeyup="filterReciters()">
+            </div>
+            <div id="recitersList">
+        `;
+        recitersData.forEach(reciter => {
+            html += `
+                <div class="card" onclick="selectReciter(${reciter.id})">
+                    <h2>${reciter.name}</h2>
+                    <p>عدد المصاحف: ${reciter.moshaf.length}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+        contentDiv.innerHTML = html;
+    }
+
+    function selectReciter(reciterId) {
+        selectedReciter = recitersData.find(r => r.id === reciterId);
+        renderSuwar();
+    }
+
+    function renderSuwar() {
+        const contentDiv = document.getElementById('content');
+        let html = `
+            <h1>سور القرآن - ${selectedReciter.name}</h1>
+            <div class="search-container">
+                <input type="text" id="surahSearch" placeholder="ابحث عن سورة" onkeyup="filterSuwar()">
+            </div>
+            <div id="suwarList">
+        `;
+        suwarData.forEach(surah => {
+            html += `
+                <div class="card" onclick="playSurah(${surah.id})">
+                    <h2>${surah.name}</h2>
+                    <p>رقم السورة: ${surah.id}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+        contentDiv.innerHTML = html;
+    }
+
+    function playSurah(surahId) {
+        const moshaf = selectedReciter.moshaf[0]; // اختيار أول مصحف متاح
+        const audioPlayer = document.getElementById('audioPlayer');
+        const surahNumber = surahId.toString().padStart(3, '0');
+        audioPlayer.src = `${moshaf.server}${surahNumber}.mp3`;
+        audioPlayer.classList.remove('hidden');
+        audioPlayer.play();
+    }
+
+    function filterReciters() {
+        const input = document.getElementById('reciterSearch');
+        const filter = input.value.toUpperCase();
+        const recitersList = document.getElementById('recitersList');
+        const cards = recitersList.getElementsByClassName('card');
+
+        for (let i = 0; i < cards.length; i++) {
+            const title = cards[i].getElementsByTagName('h2')[0];
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+
+    function filterSuwar() {
+        const input = document.getElementById('surahSearch');
+        const filter = input.value.toUpperCase();
+        const suwarList = document.getElementById('suwarList');
+        const cards = suwarList.getElementsByClassName('card');
+
+        for (let i = 0; i < cards.length; i++) {
+            const title = cards[i].getElementsByTagName('h2')[0];
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+
+    function renderLiveTV(channels) {
+        let html = '<h1>البث المباشر</h1>';
+        channels.forEach(channel => {
+            html += `
+                <div class="card">
+                    <h2>${channel.name}</h2>
+                    <video controls width="100%">
+                        <source src="${channel.url}" type="application/x-mpegURL">
+                        متصفحك لا يدعم تشغيل الفيديو.
+                    </video>
+                </div>
+            `;
+        });
+        return html;
+    }
+
+    function renderRadios(radios) {
+        let html = `
+            <h1>الراديو</h1>
+            <div class="search-container">
+                <input type="text" id="radioSearch" placeholder="ابحث عن محطة" onkeyup="filterRadios()">
+            </div>
+            <div id="radiosList">
+        `;
+        radios.forEach(radio => {
+            html += `
+                <div class="card">
+                    <h2>${radio.name}</h2>
+                    <audio controls>
+                        <source src="${radio.url}" type="audio/mpeg">
+                        متصفحك لا يدعم تشغيل الصوت.
+                    </audio>
+                </div>
+            `;
+        });
+        html += '</div>';
+        return html;
+    }
+
+    function renderTafasir(tafasir) {
+        let html = '<h1>التفسير</h1>';
+        tafasir.forEach(tafsir => {
+            html += `
+                <div class="card">
+                    <h2>${tafsir.name}</h2>
+                    <a href="${tafsir.url}" class="btn" target="_blank">اقرأ التفسير</a>
+                </div>
+            `;
+        });
+        return html;
+    }
+
+    function renderVideos(videos) {
+        let html = '<h1>الفيديوهات</h1>';
+        videos.forEach(video => {
+            html += `
+                <div class="card">
+                    <h2>${video.reciter_name}</h2>
+                    <video controls width="100%" poster="${video.videos[0].video_thumb_url}">
+                        <source src="${video.videos[0].video_url}" type="video/mp4">
+                        متصفحك لا يدعم تشغيل الفيديو.
+                    </video>
+                </div>
+            `;
+        });
+        return html;
+    }
+
+    function filterRadios() {
+        const input = document.getElementById('radioSearch');
+        const filter = input.value.toUpperCase();
+        const radiosList = document.getElementById('radiosList');
+        const cards = radiosList.getElementsByClassName('card');
+
+        for (let i = 0; i < cards.length; i++) {
+            const title = cards[i].getElementsByTagName('h2')[0];
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+    </script>
+</body>
+</html>
