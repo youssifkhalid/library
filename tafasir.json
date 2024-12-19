@@ -1,0 +1,9 @@
+{
+  "tafasir": [
+    {
+      "id": 1,
+      "url": "https://www.mp3quran.net/api/v3/tafsir?tafsir=1&language=ar",
+      "name": "الخلاصة من تفسير الطبري"
+    }
+  ]
+}
