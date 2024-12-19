@@ -146,8 +146,8 @@
 
         if (section === 'reciters') {
             Promise.all([
-                fetch('json/reciters.json').then(response => response.json()),
-                fetch('json/suwar.json').then(response => response.json())
+                fetch('reciters.json').then(response => response.json()),
+                fetch('suwar.json').then(response => response.json())
             ]).then(([recitersJson, suwarJson]) => {
                 recitersData = recitersJson.reciters;
                 suwarData = suwarJson.suwar;
@@ -157,7 +157,7 @@
                 contentDiv.innerHTML = '<p>حدث خطأ أثناء تحميل البيانات.</p>';
             });
         } else {
-            fetch(`json/${section}.json`)
+            fetch(`${section}.json`)
                 .then(response => response.json())
                 .then(data => {
                     let html = '';
