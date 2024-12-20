@@ -3,439 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> مكتبه القرأنيه</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>أيات</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.0.7/hls.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+     @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
 
-        :root {
-            --primary-color: #1a5f7a;
-            --secondary-color: #57c5b6;
-            --accent-color: #159895;
-            --background-color: #f9f9f9;
-            --text-color: #333;
-        }
+:root {
+  --primary-color: #1a5f7a;
+  --secondary-color: #57c5b6;
+  --accent-color: #159895;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+}
 
-        body {
-            font-family: 'Amiri', serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-        }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+body {
+  font-family: 'Amiri', serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
 
-        nav {
-            background-color: var(--primary-color);
-            padding: 10px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+nav {
+  background-color: var(--primary-color);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        nav ul li {
-            margin: 5px 10px;
-        }
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+}
 
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
 
-        nav ul li a:hover {
-            color: var(--secondary-color);
-        }
+nav ul li a:hover {
+  color: var(--secondary-color);
+}
 
-        h1, h2 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 20px;
-        }
+h1 {
+  text-align: center;
+  color: var(--primary-color);
+  margin: 2rem 0;
+  font-size: 2.5rem;
+}
 
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
 
-        .search-container {
-            margin-bottom: 20px;
-        }
+.card h2 {
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
 
-        .search-container input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 4px;
-            font-size: 16px;
-        }
+.search-container {
+  margin-bottom: 2rem;
+}
 
-        .btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
+.search-container input {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease;
+}
 
-        .btn:hover {
-            background-color: var(--primary-color);
-            transform: scale(1.05);
-        }
+.search-container input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.3);
+}
 
-        #audioPlayer {
-            width: 100%;
-            margin-top: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px;
-            border-radius: 4px;
-        }
+audio, video {
+  width: 100%;
+  margin-top: 1rem;
+}
 
-        .hidden {
-            display: none;
-        }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate3d(0, 40px, 0);
-            }
-            to {
-                opacity: 1;
-                transform: translate3d(0, 0, 0);
-            }
-        }
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
 
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out;
-        }
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
 
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
+  nav ul li {
+    margin-bottom: 0.5rem;
+  }
 
-            .card {
-                padding: 15px;
-            }
-        }
+  .card {
+    padding: 1rem;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Loading spinner */
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Custom checkbox */
+.custom-checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: var(--primary-color);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.custom-checkbox .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.surah-details {
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  color: white;
+}
+
+.surah-details h2 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.verse {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.verse-number {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.verse-text {
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+
+
+
     </style>
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="#" onclick="showSection('reciters')">القراء والسور</a></li>
-            <li><a href="#" onclick="showSection('live-tv')">البث المباشر</a></li>
-            <li><a href="#" onclick="showSection('radios')">الراديو</a></li>
-            <li><a href="#" onclick="showSection('tafasir')">التفسير</a></li>
-            <li><a href="#" onclick="showSection('videos')">الفيديوهات</a></li>
+            <li><a href="#" onclick="showSection('reciters')"><i class="fas fa-microphone-alt"></i> القراء والسور</a></li>
+            <li><a href="#" onclick="showSection('live-tv')"><i class="fas fa-tv"></i> البث المباشر</a></li>
+            <li><a href="#" onclick="showSection('radios')"><i class="fas fa-broadcast-tower"></i> الراديو</a></li>
+            <li><a href="#" onclick="showSection('tafasir')"><i class="fas fa-book-open"></i> التفسير</a></li>
+            <li><a href="#" onclick="showSection('videos')"><i class="fas fa-video"></i> الفيديوهات</a></li>
         </ul>
     </nav>
 
     <div class="container">
+       
         <audio id="audioPlayer" controls class="hidden"></audio>
+         <div id="surahDetails"></div>
         <div id="content"></div>
+        
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.1.5/hls.min.js"></script>
-    <script>
-    let recitersData = [];
-    let suwarData = [];
-    let selectedReciter = null;
+    <script >
+     let recitersData = [];
+let suwarData = [];
+let selectedReciter = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        showSection('reciters');
+document.addEventListener('DOMContentLoaded', () => {
+    showSection('reciters');
+});
+
+function showSection(section) {
+    const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = '<div class="loader"></div>';
+
+    if (section === 'reciters') {
+        loadRecitersAndSuwar();
+    } else {
+        fetchData(`${section}.json`)
+            .then(data => {
+                let html = '';
+                switch (section) {
+                    case 'live-tv':
+                        html = renderLiveTV(data.livetv);
+                        break;
+                    case 'radios':
+                        html = renderRadios(data.radios);
+                        break;
+                    case 'tafasir':
+                        html = renderTafasir(data.tafasir);
+                        break;
+                    case 'videos':
+                        html = renderVideos(data.videos);
+                        break;
+                }
+                contentDiv.innerHTML = html;
+                contentDiv.classList.add('fade-in-up');
+            })
+            .catch(error => showError('حدث خطأ أثناء تحميل البيانات.'));
+    }
+}
+
+function loadRecitersAndSuwar() {
+    Promise.all([
+        fetchData('reciters.json'),
+        fetchData('suwar.json')
+    ]).then(([recitersJson, suwarJson]) => {
+        recitersData = recitersJson.reciters;
+        suwarData = suwarJson.suwar;
+        renderReciters();
+    }).catch(() => showError('حدث خطأ أثناء تحميل البيانات.'));
+}
+
+function fetchData(url) {
+    return fetch(url).then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    });
+}
+
+function renderReciters() {
+    const contentDiv = document.getElementById('content');
+    let html = `
+        <h1 class="fade-in-up">القراء</h1>
+        <div class="search-container fade-in-up">
+            <input type="text" id="reciterSearch" placeholder="ابحث عن قارئ" onkeyup="filterItems('reciterSearch', 'recitersList')">
+        </div>
+        <div id="recitersList" class="row">
+    `;
+    recitersData.forEach(reciter => {
+        html += `
+            <div class="col-md-4 mb-4 fade-in-up">
+                <div class="card" onclick="selectReciter(${reciter.id})">
+                    <h2>${reciter.name}</h2>
+                    <p>عدد المصاحف: ${reciter.moshaf.length}</p>
+                    <div class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltiptext">انقر للاستماع إلى هذا القارئ</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    contentDiv.innerHTML = html;
+}
+
+function selectReciter(reciterId) {
+    selectedReciter = recitersData.find(r => r.id === reciterId);
+    renderSuwar();
+}
+
+function renderSuwar() {
+    const contentDiv = document.getElementById('content');
+    let html = `
+        <h1 class="fade-in-up">سور القرآن - ${selectedReciter.name}</h1>
+        <div class="search-container fade-in-up">
+            <input type="text" id="surahSearch" placeholder="ابحث عن سورة" onkeyup="filterItems('surahSearch', 'suwarList')">
+        </div>
+        <div id="suwarList" class="row">
+    `;
+    suwarData.forEach(surah => {
+        html += `
+            <div class="col-md-3 mb-3 fade-in-up">
+                <div class="card" onclick="playSurah(${surah.id})">
+                    <h2>${surah.name}</h2>
+                    <p>رقم السورة: ${surah.id}</p>
+                    <div class="tooltip">
+                        <i class="fas fa-play-circle"></i>
+                        <span class="tooltiptext">انقر للاستماع</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    html += `
+    </div>
+    <div id="surahDetails"></div>
+  `;
+    contentDiv.innerHTML = html;
+}
+
+function playSurah(surahId) {
+    const moshaf = selectedReciter.moshaf[0];
+    const audioPlayer = document.getElementById('audioPlayer');
+    const surahNumber = surahId.toString().padStart(3, '0');
+    audioPlayer.src = `${moshaf.server}${surahNumber}.mp3`;
+    audioPlayer.classList.remove('hidden');
+    audioPlayer.play();
+
+    // Fetch and display surah details
+    fetchSurahDetails(surahId);
+}
+
+function fetchSurahDetails(surahId) {
+  fetch(`https://api.alquran.cloud/v1/surah/${surahId}`)
+    .then(response => response.json())
+    .then(data => {
+      const surah = data.data;
+      let html = `
+        <div class="surah-details fade-in-up">
+          <h2>${surah.name} - ${surah.englishName}</h2>
+          <p>عدد الآيات: ${surah.numberOfAyahs}</p>
+          <div class="verses">
+      `;
+      surah.ayahs.forEach(ayah => {
+        html += `
+          <div class="verse">
+            <span class="verse-number">${ayah.numberInSurah}.</span>
+            <span class="verse-text">${ayah.text}</span>
+          </div>
+        `;
+      });
+      html += `
+          </div>
+        </div>
+      `;
+      document.getElementById('surahDetails').innerHTML = html;
+    })
+    .catch(error => console.error('Error fetching surah details:', error));
+}
+
+
+function renderTafasir(tafasir) {
+    let html = '<h1 class="fade-in-up">التفسير</h1>';
+    tafasir.soar.forEach(tafsir => {
+        html += `
+            <div class="col-md-4 mb-4 fade-in-up">
+                <div class="card">
+                    <h2>${tafsir.name}</h2>
+                    <audio controls>
+                        <source src="${tafsir.url}" type="audio/mpeg">
+                        متصفحك لا يدعم تشغيل الصوت.
+                    </audio>
+                    <label class="custom-checkbox">
+                        حفظ للاستماع لاحقًا
+                        <input type="checkbox" onchange="saveForLater('${tafsir.name}', '${tafsir.url}')">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        `;
+    });
+    return html;
+}
+
+function renderLiveTV(channels) {
+    let html = '<h1 class="fade-in-up">البث المباشر</h1>';
+    channels.forEach(channel => {
+        html += `
+            <div class="card fade-in-up">
+                <h2>${channel.name}</h2>
+                <video id="video-${channel.id}" class="w-100" controls></video>
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltiptext">انقر للمشاهدة</span>
+                </div>
+            </div>
+        `;
     });
 
-    function showSection(section) {
-        const contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = '<p class="text-center">جاري التحميل...</p>';
-
-        if (section === 'reciters') {
-            Promise.all([
-                fetch('reciters.json').then(response => response.json()),
-                fetch('suwar.json').then(response => response.json())
-            ]).then(([recitersJson, suwarJson]) => {
-                recitersData = recitersJson.reciters;
-                suwarData = suwarJson.suwar;
-                renderReciters();
-            }).catch(error => {
-                console.error('خطأ:', error);
-                contentDiv.innerHTML = '<p class="text-center text-danger">حدث خطأ أثناء تحميل البيانات.</p>';
-            });
-        } else {
-            fetch(`${section}.json`)
-                .then(response => response.json())
-                .then(data => {
-                    let html = '';
-                    switch(section) {
-                        case 'live-tv':
-                            html = renderLiveTV(data.livetv);
-                            break;
-                        case 'radios':
-                            html = renderRadios(data.radios);
-                            break;
-                        case 'tafasir':
-                            html = renderTafasir(data.tafasir);
-                            break;
-                        case 'videos':
-                            html = renderVideos(data.videos);
-                            break;
-                    }
-                    contentDiv.innerHTML = html;
-                    contentDiv.classList.add('fade-in-up');
-                })
-                .catch(error => {
-                    console.error('خطأ:', error);
-                    contentDiv.innerHTML = '<p class="text-center text-danger">حدث خطأ أثناء تحميل البيانات.</p>';
-                });
-        }
-    }
-
-    function renderReciters() {
-        const contentDiv = document.getElementById('content');
-        let html = `
-            <h1 class="animate__animated animate__fadeIn">القراء</h1>
-            <div class="search-container">
-                <input type="text" id="reciterSearch" placeholder="ابحث عن قارئ" onkeyup="filterReciters()">
-            </div>
-            <div id="recitersList" class="row">
-        `;
-        recitersData.forEach(reciter => {
-            html += `
-                <div class="col-md-4 mb-4">
-                    <div class="card animate__animated animate__fadeInUp" onclick="selectReciter(${reciter.id})">
-                        <h2>${reciter.name}</h2>
-                        <p>عدد المصاحف: ${reciter.moshaf.length}</p>
-                    </div>
-                </div>
-            `;
-        });
-        html += '</div>';
-        contentDiv.innerHTML = html;
-    }
-
-    function selectReciter(reciterId) {
-        selectedReciter = recitersData.find(r => r.id === reciterId);
-        renderSuwar();
-    }
-
-    function renderSuwar() {
-        const contentDiv = document.getElementById('content');
-        let html = `
-            <h1 class="animate__animated animate__fadeIn">سور القرآن - ${selectedReciter.name}</h1>
-            <div class="search-container">
-                <input type="text" id="surahSearch" placeholder="ابحث عن سورة" onkeyup="filterSuwar()">
-            </div>
-            <div id="suwarList" class="row">
-        `;
-        suwarData.forEach(surah => {
-            html += `
-                <div class="col-md-3 mb-3">
-                    <div class="card animate__animated animate__fadeInUp" onclick="playSurah(${surah.id})">
-                        <h2>${surah.name}</h2>
-                        <p>رقم السورة: ${surah.id}</p>
-                    </div>
-                </div>
-            `;
-        });
-        html += '</div>';
-        contentDiv.innerHTML = html;
-    }
-
-    function playSurah(surahId) {
-        const moshaf = selectedReciter.moshaf[0]; // اختيار أول مصحف متاح
-        const audioPlayer = document.getElementById('audioPlayer');
-        const surahNumber = surahId.toString().padStart(3, '0');
-        audioPlayer.src = `${moshaf.server}${surahNumber}.mp3`;
-        audioPlayer.classList.remove('hidden');
-        audioPlayer.play();
-    }
-
-    function filterReciters() {
-        const input = document.getElementById('reciterSearch');
-        const filter = input.value.toUpperCase();
-        const recitersList = document.getElementById('recitersList');
-        const cards = recitersList.getElementsByClassName('card');
-
-        for (let i = 0; i < cards.length; i++) {
-            const title = cards[i].getElementsByTagName('h2')[0];
-            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-                cards[i].parentElement.style.display = "";
-            } else {
-                cards[i].parentElement.style.display = "none";
-            }
-        }
-    }
-
-    function filterSuwar() {
-        const input = document.getElementById('surahSearch');
-        const filter = input.value.toUpperCase();
-        const suwarList = document.getElementById('suwarList');
-        const cards = suwarList.getElementsByClassName('card');
-
-        for (let i = 0; i < cards.length; i++) {
-            const title = cards[i].getElementsByTagName('h2')[0];
-            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-                cards[i].parentElement.style.display = "";
-            } else {
-                cards[i].parentElement.style.display = "none";
-            }
-        }
-    }
-
-    function renderLiveTV(channels) {
-        let html = '<h1 class="animate__animated animate__fadeIn">البث المباشر</h1>';
+    setTimeout(() => {
         channels.forEach(channel => {
-            html += `
-                <div class="card animate__animated animate__fadeInUp">
-                    <h2>${channel.name}</h2>
-                    <video id="video-${channel.id}" class="w-100" controls></video>
-                </div>
-            `;
-        });
-        
-        setTimeout(() => {
-            channels.forEach(channel => {
-                const video = document.getElementById(`video-${channel.id}`);
-                if (Hls.isSupported()) {
-                    const hls = new Hls();
-                    hls.loadSource(channel.url);
-                    hls.attachMedia(video);
-                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = channel.url;
-                }
-            });
-        }, 0);
-
-        return html;
-    }
-
-    function renderRadios(radios) {
-        let html = `
-            <h1 class="animate__animated animate__fadeIn">الراديو</h1>
-            <div class="search-container">
-                <input type="text" id="radioSearch" placeholder="ابحث عن محطة" onkeyup="filterRadios()">
-            </div>
-            <div id="radiosList" class="row">
-        `;
-        radios.forEach(radio => {
-            html += `
-                <div class="col-md-4 mb-4">
-                    <div class="card animate__animated animate__fadeInUp">
-                        <h2>${radio.name}</h2>
-                        <audio controls>
-                            <source src="${radio.url}" type="audio/mpeg">
-                            متصفحك لا يدعم تشغيل الصوت.
-                        </audio>
-                    </div>
-                </div>
-            `;
-        });
-        html += '</div>';
-        return html;
-    }
-
-    function renderTafasir(tafasir) {
-        let html = '<h1 class="animate__animated animate__fadeIn">التفسير</h1>';
-        tafasir.forEach(tafsir => {
-            html += `
-                <div class="card animate__animated animate__fadeInUp">
-                    <h2>${tafsir.name}</h2>
-                    <button class="btn" onclick="showTafsir('${tafsir.url}')">اقرأ التفسير</button>
-                </div>
-            `;
-        });
-        return html;
-    }
-
-    function showTafsir(url) {
-        const contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = '<p class="text-center">جاري تحميل التفسير...</p>';
-        
-        fetch(url)
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const tafsirContent = doc.body.innerHTML;
-                contentDiv.innerHTML = `
-                    <div class="card animate__animated animate__fadeIn">
-                        <h1>التفسير</h1>
-                        <div class="tafsir-content">
-                            ${tafsirContent}
-                        </div>
-                    </div>
-                `;
-            })
-            .catch(error => {
-                console.error('خطأ:', error);
-                contentDiv.innerHTML = '<p class="text-center text-danger">حدث خطأ أثناء تحميل التفسير.</p>';
-            });
-    }
-
-    function renderVideos(videos) {
-        let html = '<h1 class="animate__animated animate__fadeIn">الفيديوهات</h1>';
-        videos.forEach(video => {
-            html += `
-                <div class="card animate__animated animate__fadeInUp">
-                    <h2>${video.reciter_name}</h2>
-                    <video controls class="w-100" poster="${video.videos[0].video_thumb_url}">
-                        <source src="${video.videos[0].video_url}" type="video/mp4">
-                        متصفحك لا يدعم تشغيل الفيديو.
-                    </video>
-                </div>
-            `;
-        });
-        return html;
-    }
-
-    function filterRadios() {
-        const input = document.getElementById('radioSearch');
-        const filter = input.value.toUpperCase();
-        const radiosList = document.getElementById('radiosList');
-        const cards = radiosList.getElementsByClassName('card');
-
-        for (let i = 0; i < cards.length; i++) {
-            const title = cards[i].getElementsByTagName('h2')[0];
-            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-                cards[i].parentElement.style.display = "";
-            } else {
-                cards[i].parentElement.style.display = "none";
+            const video = document.getElementById(`video-${channel.id}`);
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(channel.url);
+                hls.attachMedia(video);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = channel.url;
             }
+        });
+    }, 0);
+
+    return html;
+}
+
+function renderRadios(radios) {
+    let html = `
+        <h1 class="fade-in-up">الراديو</h1>
+        <div class="search-container fade-in-up">
+            <input type="text" id="radioSearch" placeholder="ابحث عن محطة" onkeyup="filterItems('radioSearch', 'radiosList')">
+        </div>
+        <div id="radiosList" class="row">
+    `;
+    radios.forEach(radio => {
+        html += `
+            <div class="col-md-4 mb-4 fade-in-up">
+                <div class="card">
+                    <h2>${radio.name}</h2>
+                    <audio controls>
+                        <source src="${radio.url}" type="audio/mpeg">
+                        متصفحك لا يدعم تشغيل الصوت.
+                    </audio>
+                    <div class="tooltip">
+                        <i class="fas fa-heart"></i>
+                        <span class="tooltiptext">أضف إلى المفضلة</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    return html;
+}
+
+function renderVideos(videos) {
+    let html = '<h1 class="fade-in-up">الفيديوهات</h1>';
+    videos.forEach(video => {
+        html += `
+            <div class="card fade-in-up">
+                <h2>${video.reciter_name}</h2>
+                <video controls class="w-100" poster="${video.videos[0].video_thumb_url}">
+                    <source src="${video.videos[0].video_url}" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+                <div class="tooltip">
+                    <i class="fas fa-share-alt"></i>
+                    <span class="tooltiptext">مشاركة الفيديو</span>
+                </div>
+            </div>
+        `;
+    });
+    return html;
+}
+
+function filterItems(searchId, listId) {
+    const input = document.getElementById(searchId);
+    const filter = input.value.toUpperCase();
+    const list = document.getElementById(listId);
+    const cards = list.getElementsByClassName('card');
+
+    for (let i = 0; i < cards.length; i++) {
+        const title = cards[i].getElementsByTagName('h2')[0];
+        if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+            cards[i].parentElement.style.display = "";
+        } else {
+            cards[i].parentElement.style.display = "none";
         }
     }
+}
+
+function showError(message) {
+    const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = `<p class="text-center text-danger">${message}</p>`;
+}
+
+function saveForLater(name, url) {
+    let savedItems = JSON.parse(localStorage.getItem('savedItems')) || [];
+    savedItems.push({ name, url });
+    localStorage.setItem('savedItems', JSON.stringify(savedItems));
+    alert('تم الحفظ بنجاح!');
+}
+
+// Add this function to show saved items
+function showSavedItems() {
+    let savedItems = JSON.parse(localStorage.getItem('savedItems')) || [];
+    let html = '<h1 class="fade-in-up">العناصر المحفوظة</h1>';
+    if (savedItems.length === 0) {
+        html += '<p class="text-center">لا توجد عناصر محفوظة.</p>';
+    } else {
+        savedItems.forEach(item => {
+            html += `
+                <div class="card fade-in-up">
+                    <h2>${item.name}</h2>
+                    <audio controls>
+                        <source src="${item.url}" type="audio/mpeg">
+                        متصفحك لا يدعم تشغيل الصوت.
+                    </audio>
+                </div>
+            `;
+        });
+    }
+    document.getElementById('content').innerHTML = html;
+}
+
+// Add event listener for the new menu item
+document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('nav ul');
+    const savedItemsLink = document.createElement('li');
+    savedItemsLink.innerHTML = '<a href="#" onclick="showSavedItems()"><i class="fas fa-bookmark"></i> العناصر المحفوظة</a>';
+    nav.appendChild(savedItemsLink);
+});
+
+
+
+
     </script>
 </body>
 </html>
+
